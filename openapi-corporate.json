@@ -12,17 +12,12 @@
     }
   ],
   "tags": [
-    { "name": "Clientes" },
-    { "name": "Produtos" },
-    { "name": "Veículos" },
-    { "name": "Motoristas" },
-    { "name": "Programações" },
     { "name": "Agendamentos" },
     { "name": "Pesagens" },
-    { "name": "Embalagens" },
+    { "name": "Programações" },
     { "name": "Saldos" },
     { "name": "Checklists" },
-    { "name": "Imagens" }
+    { "name": "Motoristas" }
   ],
   "security": [
     {
@@ -30,13 +25,10 @@
     }
   ],
   "paths": {
-    "/agendamentos/{id}/acoes": {
+    "/agendamentos/acoes": {
       "post": {
         "tags": ["Agendamentos"],
-        "summary": "Solicitação de ações com crachá/biometria",
-        "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
-        ],
+        "summary": "Solicitação de ações com crachá/biometria",        
         "requestBody": {
           "required": true,
           "content": {

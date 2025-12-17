@@ -20,8 +20,6 @@
     { "name": "Agendamentos" },
     { "name": "Pesagens" },
     { "name": "Embalagens" },
-    { "name": "Saldos" },
-    { "name": "Checklists" },
     { "name": "Imagens" }
   ],
   "security": [
