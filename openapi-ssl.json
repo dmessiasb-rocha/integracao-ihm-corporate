@@ -383,19 +383,6 @@
       }
     },
     "schemas": {
-      "Endereco": {
-        "type": "object",
-        "properties": {
-          "Rua": { "type": "string" },
-          "Numero": { "type": "integer", "minimum": 0 },
-          "Complemento": { "type": "string" },
-          "Bairro": { "type": "string" },
-          "Cidade": { "type": "string" },
-          "Estado": { "type": "string" },
-          "Pais": { "type": "string" },
-          "Cep": { "type": "string" }
-        }
-      },
       "Cliente": {
         "type": "object",
         "required": ["IdCliente", "RazaoSocial"],
@@ -405,7 +392,7 @@
           "NumCPF": { "type": "string", "nullable": true },
           "RazaoSocial": { "type": "string" },
           "NomeFantasia": { "type": "string", "nullable": true },
-          "Endereco": { "$ref": "#/components/schemas/Endereco" },
+          "Endereco": { "type": "object" },
           "Telefone": { "type": "string", "nullable": true },
           "Email": { "type": "string", "nullable": true },
           "Tipo": { "type": "string", "description": "Cliente/Fornecedor/Destinatario/Transportador", "nullable": true }
@@ -608,21 +595,6 @@
         "properties": {
           "CodVeiculo": { "type": "string" },
           "Descricao": { "type": "string" }
-        }
-      },
-      "ChecklistCarga": {
-        "type": "object",
-        "properties": {
-          "Status": { "type": "boolean" },
-          "ChaveNF": { "type": "string", "nullable": true },
-          "NumeroNF": { "type": "string", "nullable": true },
-          "SerieNF": { "type": "string", "nullable": true },
-          "DataEmissao": { "type": "string", "format": "date-time", "nullable": true },
-          "PesoLiquido": { "type": "number", "nullable": true },
-          "ValorTotal": { "type": "number", "nullable": true },
-          "SolicitaCapturaBiometria": { "type": "boolean" },
-          "Situacao": { "type": "integer", "description": "0=ok, 1=erro" },
-          "MensagemErro": { "type": "string", "nullable": true }
         }
       },
       "SaldoClienteProduto": {
