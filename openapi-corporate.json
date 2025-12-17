@@ -1,0 +1,519 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "API Corporate Unisolution",
+    "version": "1.0.0",
+    "description": "Especificação OpenAPI dos endpoints do sistema Corporate da Unisolution (IDs 009,010,011,012,013,015,017,019,021) baseada na RTP-426-AEF-001."
+  },
+  "servers": [
+    {
+      "url": "https://corporate.unisolution.exemplo.com/api",
+      "description": "Ambiente Corporate Unisolution (exemplo)"
+    }
+  ],
+  "tags": [
+    { "name": "Clientes" },
+    { "name": "Produtos" },
+    { "name": "Veículos" },
+    { "name": "Motoristas" },
+    { "name": "Programações" },
+    { "name": "Agendamentos" },
+    { "name": "Pesagens" },
+    { "name": "Embalagens" },
+    { "name": "Saldos" },
+    { "name": "Checklists" },
+    { "name": "Imagens" }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/agendamentos/{id}/acoes": {
+      "post": {
+        "tags": ["Agendamentos"],
+        "summary": "Solicitação de ações com crachá/biometria",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/SolicitacaoAcao" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Ação registrada" }
+        }
+      }
+    },
+    "/pesagens": {
+      "post": {
+        "tags": ["Pesagens"],
+        "summary": "Registro de pesagem",
+        "description": "Acionado após estabilização do peso.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Pesagem" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Pesagem registrada" }
+        }
+      }
+    },
+    "/programacoes/transferencia": {
+      "post": {
+        "tags": ["Programações"],
+        "summary": "Criação de programação de transferência",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ProgramacaoTransferencia" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Programação de transferência criado" }
+        }
+      }
+    },
+    "/saldos/lote-deposito": {
+      "get": {
+        "tags": ["Saldos"],
+        "summary": "Consulta de saldos por lote e depósito",
+        "parameters": [
+          { "in": "query", "name": "Lote", "schema": { "type": "string" } },
+          { "in": "query", "name": "Deposito", "schema": { "type": "string" } },
+          { "in": "query", "name": "NumDI", "schema": { "type": "string" } },
+          { "in": "query", "name": "Origem", "schema": { "type": "string" } },
+          { "in": "query", "name": "CodDest", "schema": { "type": "string" } },
+          { "in": "query", "name": "Cliente", "schema": { "type": "string" } },
+          { "in": "query", "name": "Material", "schema": { "type": "string" } },
+          { "in": "query", "name": "Produto", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de saldos",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "$ref": "#/components/schemas/SaldoLoteDeposito" } }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/programacoes/carga": {
+      "get": {
+        "tags": ["Programações"],
+        "summary": "Consulta de programações de carga",
+        "responses": {
+          "200": {
+            "description": "Lista de programações de carga",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "$ref": "#/components/schemas/ProgramacaoCarga" } }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/agendamentos": {
+      "get": {
+        "tags": ["Agendamentos"],
+        "summary": "Consulta de agendamentos",
+        "responses": {
+          "200": {
+            "description": "Lista de agendamentos",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Agendamento" } }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/checklists/carga": {
+      "get": {
+        "tags": ["Checklists"],
+        "summary": "Checklist de carga",
+        "parameters": [
+          { "in": "query", "name": "IdAgendamento", "required": true, "schema": { "type": "string" } },
+          { "in": "query", "name": "CodigoArmazem", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado do checklist de carga",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ChecklistCarga" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/saldos/cliente-produto": {
+      "get": {
+        "tags": ["Saldos"],
+        "summary": "Consulta de saldo por cliente/produto",
+        "parameters": [
+          { "in": "query", "name": "Cliente", "required": true, "schema": { "type": "string" } },
+          { "in": "query", "name": "Armazem", "required": true, "schema": { "type": "string" } },
+          { "in": "query", "name": "Produto", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de saldos por lote",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "$ref": "#/components/schemas/SaldoClienteProduto" } }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/motoristas": {
+      "post": {
+        "tags": ["Motoristas"],
+        "summary": "Criação de motorista",
+        "description": "Cadastro de motorista iniciado pelo SSL (ID 021).",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Motorista" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Motorista criado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "IdMotoristaCorporate": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Motoristas"],
+        "summary": "Atualização de motorista",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Motorista" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Motorista atualizado" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "Endereco": {
+        "type": "object",
+        "properties": {
+          "Rua": { "type": "string" },
+          "Numero": { "type": "integer", "minimum": 0 },
+          "Complemento": { "type": "string" },
+          "Bairro": { "type": "string" },
+          "Cidade": { "type": "string" },
+          "Estado": { "type": "string" },
+          "Pais": { "type": "string" },
+          "Cep": { "type": "string" }
+        }
+      },
+      "Cliente": {
+        "type": "object",
+        "required": ["IdCliente", "RazaoSocial"],
+        "properties": {
+          "IdCliente": { "type": "string", "description": "Código do cliente no ERP" },
+          "NumCNPJ": { "type": "string", "nullable": true },
+          "NumCPF": { "type": "string", "nullable": true },
+          "RazaoSocial": { "type": "string" },
+          "NomeFantasia": { "type": "string", "nullable": true },
+          "Endereco": { "$ref": "#/components/schemas/Endereco" },
+          "Telefone": { "type": "string", "nullable": true },
+          "Email": { "type": "string", "nullable": true },
+          "Tipo": { "type": "string", "description": "Cliente/Fornecedor/Destinatario/Transportador", "nullable": true }
+        }
+      },
+      "Produto": {
+        "type": "object",
+        "required": ["CodProduto", "Descricao", "UnidadeMedida"],
+        "properties": {
+          "CodProduto": { "type": "string" },
+          "Descricao": { "type": "string" },
+          "UnidadeMedida": { "type": "string" }
+        }
+      },
+      "Veiculo": {
+        "type": "object",
+        "required": ["IdVeiculo", "Placa", "Uf"],
+        "properties": {
+          "IdVeiculo": { "type": "string" },
+          "Placa": { "type": "string" },
+          "Uf": { "type": "string" },
+          "Ano": { "type": "integer", "nullable": true },
+          "QtdEixos": { "type": "integer", "nullable": true },
+          "Modelo": { "type": "string", "nullable": true },
+          "CpfProprietario": { "type": "string", "nullable": true },
+          "CnpjProprietario": { "type": "string", "nullable": true },
+          "IdTransportadora": { "type": "string", "nullable": true }
+        }
+      },
+      "Motorista": {
+        "type": "object",
+        "required": ["IdMotorista", "Nome", "NumCpf", "NumCnh", "DthValidadeCnh"],
+        "properties": {
+          "IdMotorista": { "type": "string" },
+          "Nome": { "type": "string" },
+          "NumCpf": { "type": "string" },
+          "NumCnh": { "type": "string" },
+          "DthValidadeCnh": { "type": "string", "format": "date-time" },
+          "Celular": { "type": "string", "nullable": true },
+          "Foto": { "type": "string", "format": "byte", "nullable": true },
+          "IdAgendamento": { "type": "string", "nullable": true },
+          "OrgaoEmissor": { "type": "string", "nullable": true },
+          "RG": { "type": "string", "nullable": true },
+          "OrgaoEmissorCnh": { "type": "string", "nullable": true },
+          "Sexo": { "type": "string", "nullable": true },
+          "DataNascimento": { "type": "string", "format": "date-time", "nullable": true },
+          "PaisNacionalidade": { "type": "string", "nullable": true },
+          "Estado": { "type": "string", "nullable": true },
+          "TipoDocumento": { "type": "string", "nullable": true },
+          "NumeroDocumento": { "type": "string", "nullable": true },
+          "OrgaoEmissaoDocumento": { "type": "string", "nullable": true },
+          "ValidadeDocumento": { "type": "string", "format": "date-time", "nullable": true }
+        }
+      },
+      "ProgramacaoNavio": {
+        "type": "object",
+        "required": [
+          "CodCliente",
+          "CodProduto",
+          "NomeNavio",
+          "IdNavio",
+          "Lote",
+          "Deposito",
+          "NumeroProgramacaoAppa",
+          "TipoDocumento"
+        ],
+        "properties": {
+          "CodCliente": { "type": "string" },
+          "CodProduto": { "type": "string" },
+          "NomeNavio": { "type": "string" },
+          "IdNavio": { "type": "string", "description": "ID proveniente da APPA Web" },
+          "Lote": { "type": "string" },
+          "Deposito": { "type": "string" },
+          "NumeroProgramacaoAppa": { "type": "string" },
+          "TipoDocumento": { "type": "string", "description": "NF/ticketApp" }
+        }
+      },
+      "ConfirmacaoAcao": {
+        "type": "object",
+        "required": ["IdAgendamento", "Status", "Acao", "IdCorporate"],
+        "properties": {
+          "IdAgendamento": { "type": "string" },
+          "Status": { "type": "string" },
+          "Acao": { "type": "string", "description": "Exemplo: \"Crachá gravado\", \"Biometria\"" },
+          "IdCorporate": { "type": "string" }
+        }
+      },
+      "ConfirmacaoPesagem": {
+        "type": "object",
+        "required": ["IdAgendamento", "Status"],
+        "properties": {
+          "IdAgendamento": { "type": "string" },
+          "Status": { "type": "string", "description": "Liberar / AjustarPeso / LiberarVeiculoComErro" },
+          "MensagemErro": { "type": "string", "nullable": true },
+          "Doc": { "type": "string", "format": "byte", "nullable": true, "description": "Ticket gerado pelo ERP (Base64)" }
+        }
+      },
+      "ConfirmacaoProgramacaoCarga": {
+        "type": "object",
+        "required": ["IdProgramacaoSSL", "Status"],
+        "properties": {
+          "IdProgramacaoSSL": { "type": "string" },
+          "Status": { "type": "string", "description": "Liberado/Recusado" },
+          "Observacao": { "type": "string", "nullable": true },
+          "QuantidadeLiberada": { "type": "number", "nullable": true },
+          "DataInicial": { "type": "string", "format": "date-time", "nullable": true },
+          "DataFinal": { "type": "string", "format": "date-time", "nullable": true },
+          "IdProgramacaoCorporate": { "type": "string", "nullable": true }
+        }
+      },
+      "SolicitacaoAcao": {
+        "type": "object",
+        "required": ["IdAgendamento", "Local", "Acao"],
+        "properties": {
+          "IdAgendamento": { "type": "string" },
+          "Local": { "type": "string", "description": "Qual totem" },
+          "Acao": { "type": "string", "description": "Exemplo: gravação de crachá, captura de biometria" }
+        }
+      },
+      "Pesagem": {
+        "type": "object",
+        "required": ["IdAgendamento", "IdCorporate", "Peso"],
+        "properties": {
+          "IdAgendamento": { "type": "string" },
+          "IdCorporate": { "type": "string", "description": "Recebido após gravação de crachá" },
+          "Peso": { "type": "number" },
+          "DiretorioImagemOcrCavalo": { "type": "string", "nullable": true },
+          "DiretorioImagemOcrCarreta01": { "type": "string", "nullable": true },
+          "DiretorioImagemOcrCarreta02": { "type": "string", "nullable": true },
+          "PlacaCavaloOCR": { "type": "string", "nullable": true },
+          "PlacaCarreta01OCR": { "type": "string", "nullable": true },
+          "PlacaCarreta02OCR": { "type": "string", "nullable": true }
+        }
+      },
+      "ProgramacaoTransferencia": {
+        "type": "object",
+        "required": ["Armazem", "Cliente", "Produto", "Quantidade", "Lote", "DataProgramada"],
+        "properties": {
+          "Armazem": { "type": "string" },
+          "Cliente": { "type": "string" },
+          "Produto": { "type": "string" },
+          "Quantidade": { "type": "number" },
+          "Lote": { "type": "string" },
+          "DataProgramada": { "type": "string", "format": "date-time" },
+          "IdProgramacaoSSL": { "type": "string", "nullable": true },
+          "ObservacaoFiscal": { "type": "string", "nullable": true }
+        }
+      },
+      "SaldoLoteDeposito": {
+        "type": "object",
+        "properties": {
+          "Lote": { "type": "string" },
+          "Deposito": { "type": "string" },
+          "NumDI": { "type": "string", "nullable": true },
+          "Origem": { "type": "string", "nullable": true },
+          "CodDest": { "type": "string", "nullable": true },
+          "Cliente": { "type": "string", "nullable": true },
+          "Material": { "type": "string", "nullable": true },
+          "Produto": { "type": "string", "nullable": true },
+          "Saldo": { "type": "number" }
+        }
+      },
+      "ProgramacaoCarga": {
+        "type": "object",
+        "properties": {
+          "IdProgramacaoSSL": { "type": "string" },
+          "NumLote": { "type": "string" },
+          "Deposito": { "type": "string" },
+          "QuantidadeProgramada": { "type": "number" },
+          "Modal": { "type": "string", "description": "Fixo \"Rodoviario\"" },
+          "DataProgramacao": { "type": "string", "format": "date-time" },
+          "ObsFiscal": { "type": "string", "nullable": true },
+          "Embalagem": { "type": "string", "nullable": true },
+          "UFDestino": { "type": "string", "nullable": true },
+          "RazaoSocialDestino": { "type": "string", "nullable": true },
+          "CNPJDestino": { "type": "string", "nullable": true }
+        }
+      },
+      "Embalagem": {
+        "type": "object",
+        "required": ["CodEmbalagem", "Descricao"],
+        "properties": {
+          "CodEmbalagem": { "type": "string" },
+          "Descricao": { "type": "string" }
+        }
+      },
+      "Agendamento": {
+        "type": "object",
+        "properties": {
+          "IdAgendamento": { "type": "string" },
+          "IdProgramacaoCorporate": { "type": "string", "description": "Referência Programação Navio/Carga/Transferência" },
+          "CodCliente": { "type": "string" },
+          "CodProduto": { "type": "string" },
+          "PlacaCavalo": { "type": "string", "nullable": true },
+          "PlacaCarreta01": { "type": "string", "nullable": true },
+          "PlacaCarreta02": { "type": "string", "nullable": true },
+          "TipoVeiculo": { "type": "string" },
+          "CodMotorista": { "type": "string", "nullable": true },
+          "CodTransportadora": { "type": "string", "nullable": true },
+          "HoraAgendamento": { "type": "string", "format": "date-time" },
+          "Quantidade": { "type": "number" },
+          "CodClienteDestino": { "type": "string", "nullable": true },
+          "TipoAgendamento": { "type": "string" },
+          "NumTicketAppa": { "type": "string", "nullable": true },
+          "NomeArmazem": { "type": "string" },
+          "IdAgendamentoCarga": { "type": "string", "nullable": true },
+          "Situacao": { "type": "integer", "description": "0=ok, 1=erro" },
+          "MensagemErro": { "type": "string", "nullable": true }
+        }
+      },
+      "TipoVeiculo": {
+        "type": "object",
+        "properties": {
+          "CodVeiculo": { "type": "string" },
+          "Descricao": { "type": "string" }
+        }
+      },
+      "ChecklistCarga": {
+        "type": "object",
+        "properties": {
+          "Status": { "type": "boolean" },
+          "ChaveNF": { "type": "string", "nullable": true },
+          "NumeroNF": { "type": "string", "nullable": true },
+          "SerieNF": { "type": "string", "nullable": true },
+          "DataEmissao": { "type": "string", "format": "date-time", "nullable": true },
+          "PesoLiquido": { "type": "number", "nullable": true },
+          "ValorTotal": { "type": "number", "nullable": true },
+          "SolicitaCapturaBiometria": { "type": "boolean" },
+          "Situacao": { "type": "integer", "description": "0=ok, 1=erro" },
+          "MensagemErro": { "type": "string", "nullable": true }
+        }
+      },
+      "SaldoClienteProduto": {
+        "type": "object",
+        "properties": {
+          "Lote": { "type": "string" },
+          "Saldo": { "type": "number" }
+        }
+      },
+      "ConfirmacaoProgramacaoTransferencia": {
+        "type": "object",
+        "required": ["IdProgramacaoSSL", "Status"],
+        "properties": {
+          "IdProgramacaoSSL": { "type": "string" },
+          "Status": { "type": "string", "description": "Liberado/Recusado" },
+          "Observacao": { "type": "string", "nullable": true },
+          "QuantidadeLiberada": { "type": "number", "nullable": true },
+          "DataInicial": { "type": "string", "format": "date-time", "nullable": true },
+          "DataFinal": { "type": "string", "format": "date-time", "nullable": true },
+          "IdProgramacaoCorporate": { "type": "string", "nullable": true }
+        }
+      }
+    }
+  }
+}

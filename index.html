@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Corporate Unisolution - Redoc</title>
+  <link rel="icon" href="https://redocly.github.io/redoc/favicon.ico">
+  <style>
+    body { margin: 0; padding: 0; }
+    .redoc-container { height: 100vh; }
+  </style>
+</head>
+<body>
+  <div class="redoc-container" id="redoc-container"></div>
+  <script src="https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js"></script>
+  <script>
+    Redoc.init('openapi-corporate.json', {
+      scrollYOffset: 60,
+      hideDownloadButton: false,
+      theme: {
+        colors: {
+          primary: { main: '#1976d2' },
+          success: { main: '#388e3c' },
+          warning: { main: '#fbc02d' },
+          error: { main: '#d32f2f' }
+        },
+        sidebar: { backgroundColor: '#f5f5f5' },
+        typography: { fontFamily: 'Roboto, Arial, sans-serif' }
+      }
+    }, document.getElementById('redoc-container'));
+  </script>
+</body>
+</html>
