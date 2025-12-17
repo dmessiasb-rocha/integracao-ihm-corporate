@@ -280,6 +280,58 @@
           "Modelo": { "type": "string", "nullable": true },
           "CpfProprietario": { "type": "string", "nullable": true },
           "CnpjProprietario": { "type": "string", "nullable": true },
+          "IdTransportadora": { "type": "string", "nullable": true }
+        }
+      },
+      "Motorista": {
+        "type": "object",
+        "required": ["IdMotorista", "Nome", "NumCpf", "NumCnh", "DthValidadeCnh"],
+        "properties": {
+          "IdMotorista": { "type": "string" },
+          "Nome": { "type": "string" },
+          "NumCpf": { "type": "string" },
+          "NumCnh": { "type": "string" },
+          "DthValidadeCnh": { "type": "string", "format": "date-time" },
+          "Celular": { "type": "string", "nullable": true },
+          "Foto": { "type": "string", "format": "byte", "nullable": true },
+          "IdAgendamento": { "type": "string", "nullable": true },
+          "OrgaoEmissor": { "type": "string", "nullable": true },
+          "RG": { "type": "string", "nullable": true },
+          "OrgaoEmissorCnh": { "type": "string", "nullable": true },
+          "Sexo": { "type": "string", "nullable": true },
+          "DataNascimento": { "type": "string", "format": "date-time", "nullable": true },
+          "PaisNacionalidade": { "type": "string", "nullable": true },
+          "Estado": { "type": "string", "nullable": true },
+          "TipoDocumento": { "type": "string", "nullable": true },
+          "NumeroDocumento": { "type": "string", "nullable": true },
+          "OrgaoEmissaoDocumento": { "type": "string", "nullable": true },
+          "ValidadeDocumento": { "type": "string", "format": "date-time", "nullable": true }
+        }
+      },
+      "ProgramacaoNavio": {
+        "type": "object",
+        "required": [
+          "CodCliente",
+          "CodProduto",
+          "NomeNavio",
+          "IdNavio",
+          "Lote",
+          "Deposito",
+          "NumeroProgramacaoAppa",
+          "TipoDocumento"
+        ],
+        "properties": {
+          "CodCliente": { "type": "string" },
+          "CodProduto": { "type": "string" },
+          "NomeNavio": { "type": "string" },
+          "IdNavio": { "type": "string", "description": "ID proveniente da APPA Web" },
+          "Lote": { "type": "string" },
+          "Deposito": { "type": "string" },
+          "NumeroProgramacaoAppa": { "type": "string" },
+          "TipoDocumento": { "type": "string", "description": "NF/ticketApp" }
+        }
+      },
+      "ConfirmacaoAcao": {
         "type": "object",
         "required": ["IdAgendamento", "Status", "Acao", "IdCorporate"],
         "properties": {
@@ -305,6 +357,29 @@
         "properties": {
           "IdProgramacaoSSL": { "type": "string" },
           "Status": { "type": "string", "description": "Liberado/Recusado" },
+          "Observacao": { "type": "string", "nullable": true },
+          "QuantidadeLiberada": { "type": "number", "nullable": true },
+          "DataInicial": { "type": "string", "format": "date-time", "nullable": true },
+          "DataFinal": { "type": "string", "format": "date-time", "nullable": true },
+          "IdProgramacaoCorporate": { "type": "string", "nullable": true }
+        }
+      },
+      "SolicitacaoAcao": {
+        "type": "object",
+        "required": ["IdAgendamento", "Local", "Acao"],
+        "properties": {
+          "IdAgendamento": { "type": "string" },
+          "Local": { "type": "string", "description": "Qual totem" },
+          "Acao": { "type": "string", "description": "Exemplo: gravação de crachá, captura de biometria" }
+        }
+      },
+      "Pesagem": {
+        "type": "object",
+        "required": ["IdAgendamento", "IdCorporate", "Peso"],
+        "properties": {
+          "IdAgendamento": { "type": "string" },
+          "IdCorporate": { "type": "string", "description": "Recebido após gravação de crachá" },
+          "Peso": { "type": "number" },
           "DiretorioImagemOcrCavalo": { "type": "string", "nullable": true },
           "DiretorioImagemOcrCarreta01": { "type": "string", "nullable": true },
           "DiretorioImagemOcrCarreta02": { "type": "string", "nullable": true },
@@ -373,6 +448,14 @@
           "CodCliente": { "type": "string" },
           "CodProduto": { "type": "string" },
           "PlacaCavalo": { "type": "string", "nullable": true },
+          "PlacaCarreta01": { "type": "string", "nullable": true },
+          "PlacaCarreta02": { "type": "string", "nullable": true },
+          "TipoVeiculo": { "type": "string" },
+          "CodMotorista": { "type": "string", "nullable": true },
+          "CodTransportadora": { "type": "string", "nullable": true },
+          "HoraAgendamento": { "type": "string", "format": "date-time" },
+          "Quantidade": { "type": "number" },
+          "CodClienteDestino": { "type": "string", "nullable": true },
           "TipoAgendamento": { "type": "string" },
           "NumTicketAppa": { "type": "string", "nullable": true },
           "NomeArmazem": { "type": "string" },
@@ -397,6 +480,13 @@
           "SerieNF": { "type": "string", "nullable": true },
           "DataEmissao": { "type": "string", "format": "date-time", "nullable": true },
           "PesoLiquido": { "type": "number", "nullable": true },
+          "ValorTotal": { "type": "number", "nullable": true },
+          "SolicitaCapturaBiometria": { "type": "boolean" },
+          "Situacao": { "type": "integer", "description": "0=ok, 1=erro" },
+          "MensagemErro": { "type": "string", "nullable": true }
+        }
+      },
+      "SaldoClienteProduto": {
         "type": "object",
         "properties": {
           "Lote": { "type": "string" },
@@ -419,5 +509,3 @@
     }
   }
 }
-
-          "IdProgramacaoSSL": { "type": "string" },
